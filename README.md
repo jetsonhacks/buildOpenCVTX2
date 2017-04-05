@@ -28,5 +28,13 @@ There are issues if have both OpenCV4Tegra and a regular OpenCV build installed 
 
 The Jetson is an aarch64 machine, which means that the OpenCV configuration variable ENABLE_NEON is ignored. The compiler includes NEON support for all machines with aarch64 architecture.
 
+When running the OpenCV tests, currently several of the tests fail.  
+
+References:
+
+Most of this information is derived from:
+http://docs.opencv.org/3.2.0/d6/d15/tutorial_building_tegra_cuda.html
+https://devtalk.nvidia.com/default/topic/965134/opencv-3-1-compilation-on-tx1-lets-collect-the-quot-definitive-quot-cmake-settings-/?offset=3
+
 
  
