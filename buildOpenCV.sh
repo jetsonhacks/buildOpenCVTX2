@@ -21,15 +21,6 @@ sudo apt-get install -y \
 # Python 2.7
 sudo apt-get install -y python-dev python-numpy python-py python-pytest -y
 
-# GStreamer
-# sudo apt-get install libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev -y
-
-# OpenGL
-# sudo apt-get install qtbase5-dev libgtkglext1 libgtkglext1-dev -y
-
-# V4L
-# sudo apt-get install -y libv4l-dev v4l-utils qv4l2 v4l2ucp
-
 git clone https://github.com/opencv/opencv.git
 cd opencv
 git checkout -b v3.2.0 3.2.0
@@ -74,4 +65,5 @@ cmake \
     -DOPENCV_TEST_DATA_PATH=../opencv_extra/testdata \
     ../
 
-# make -j6
+# Consider using all 6 cores; $ nvpmodel -m 2 or $ nvpmodel -m 0
+make -j6
