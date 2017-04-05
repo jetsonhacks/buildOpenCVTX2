@@ -65,5 +65,5 @@ cmake \
     -DOPENCV_TEST_DATA_PATH=../opencv_extra/testdata \
     ../
 
-# Consider using all 6 cores; $ nvpmodel -m 2 or $ nvpmodel -m 0
+# Consider using all 6 cores; $ sudo nvpmodel -m 2 or $ sudo nvpmodel -m 0
 make -j6
