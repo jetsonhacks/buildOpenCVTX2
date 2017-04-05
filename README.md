@@ -14,6 +14,7 @@ $ ./buildOpenCV.sh
 The build system has been known at times to have issues. It's worth doing a sanity check after the build is complete:
 
 $ cd $HOME/opencv/build
+
 $ make
 
 This should ensure that everything has been built.
@@ -21,6 +22,7 @@ This should ensure that everything has been built.
 After this, you can install the new build:
 
 $ cd $HOME/opencv/build
+
 $ sudo make install
 
 Notes:
@@ -33,7 +35,9 @@ When running the OpenCV tests, currently several of the tests fail.
 References:
 
 Most of this information is derived from:
+
 http://docs.opencv.org/3.2.0/d6/d15/tutorial_building_tegra_cuda.html
+
 https://devtalk.nvidia.com/default/topic/965134/opencv-3-1-compilation-on-tx1-lets-collect-the-quot-definitive-quot-cmake-settings-/?offset=3
 
 
