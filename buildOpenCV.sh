@@ -24,6 +24,8 @@ sudo apt-get install -y python-dev python-numpy python-py python-pytest -y
 git clone https://github.com/opencv/opencv.git
 cd opencv
 git checkout -b v3.2.0 3.2.0
+# This is for the test data
+cd $HOME
 git clone https://github.com/opencv/opencv_extra.git
 cd opencv_extra
 git checkout -b v3.2.0 3.2.0
