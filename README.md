@@ -41,16 +41,16 @@ http://docs.opencv.org/3.2.0/d6/d15/tutorial_building_tegra_cuda.html
 https://devtalk.nvidia.com/default/topic/965134/opencv-3-1-compilation-on-tx1-lets-collect-the-quot-definitive-quot-cmake-settings-/?offset=3
 
 ## Release Notes
-September 2017
-L4T 28.1
-OpenCV 3.3
-GStreamer support added to build script
-GStreamer OpenCV examples using the Jetson onboard camera 
+###September 2017
+* L4T 28.1
+* OpenCV 3.3
+* GStreamer support added to build script
+* GStreamer OpenCV examples using the Jetson onboard camera 
 
-April 2017
-Initial Release
-L4T 27.1
-OpenCV 3.2
+###April 2017
+* Initial Release
+* L4T 27.1
+* OpenCV 3.2
 
 ## License
 MIT License
