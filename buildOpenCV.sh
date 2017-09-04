@@ -1,4 +1,6 @@
 #!/bin/bash
+# License: MIT. See license file in root directory
+# Copyright(c) JetsonHacks (2017)
 cd $HOME
 sudo apt-get install -y \
     libglew-dev \
@@ -23,12 +25,12 @@ sudo apt-get install -y python-dev python-numpy python-py python-pytest -y
 
 git clone https://github.com/opencv/opencv.git
 cd opencv
-git checkout -b v3.2.0 3.2.0
+git checkout -b v3.3.0 3.3.0
 # This is for the test data
 cd $HOME
 git clone https://github.com/opencv/opencv_extra.git
 cd opencv_extra
-git checkout -b v3.2.0 3.2.0
+git checkout -b v3.3.0 3.3.0
 
 cd $HOME/opencv
 mkdir build
@@ -51,7 +53,7 @@ cmake \
     -DWITH_OPENCL=OFF \
     -DWITH_OPENMP=OFF \
     -DWITH_FFMPEG=ON \
-    -DWITH_GSTREAMER=OFF \
+    -DWITH_GSTREAMER=ON \
     -DWITH_GSTREAMER_0_10=OFF \
     -DWITH_CUDA=ON \
     -DWITH_GTK=ON \
@@ -68,4 +70,4 @@ cmake \
     ../
 
 # Consider using all 6 cores; $ sudo nvpmodel -m 2 or $ sudo nvpmodel -m 0
-make -j6
+make -j4
