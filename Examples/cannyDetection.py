@@ -40,6 +40,7 @@ def read_cam():
         font = cv2.FONT_HERSHEY_PLAIN
         helpText="'Esc' to Quit, '1' for Camera Feed, '2' for Canny Detection, '3' for All Stages. '4' to hide help"
         edgeThreshold=40
+        showFullScreen = False
         while True:
             if cv2.getWindowProperty(windowName, 0) < 0: # Check to see if the user closed the window
                 # This will fail if the user closed the window; Nasties get printed to the console
@@ -93,6 +94,13 @@ def read_cam():
             elif key==46: # , raise canny edge threshold
                 edgeThreshold=edgeThreshold+1
                 print 'Canny Edge Threshold Maximum: ', edgeThreshold
+            elif key==74: # Toggle fullscreen; This is the F3 key on this particular keyboard
+                # Toggle full screen mode
+                if showFullScreen == False : 
+                    cv2.setWindowProperty(windowName, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_FULLSCREEN)
+                else:
+                    cv2.setWindowProperty(windowName, cv2.WND_PROP_FULLSCREEN, cv2.WINDOW_NORMAL) 
+                showFullScreen = not showFullScreen
               
     else:
      print "camera open failed"
