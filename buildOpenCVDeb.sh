@@ -2,11 +2,16 @@
 # License: MIT. See license file in root directory
 # Copyright(c) JetsonHacks (2017-2018)
 
+# Experimental; Builds a cheat .deb file in the ~/package_build directory
+#
 OPENCV_VERSION=3.4.1
 # Jetson TX2
 ARCH_BIN=6.2
 # Jetson TX1
 # ARCH_BIN=5.3
+MAINTAINER="maintainer <maintainer@maintainer.com>"
+# Builds packages in the directory ~/package_build
+
 
 # Repository setup
 sudo apt-add-repository universe
@@ -31,6 +36,7 @@ sudo apt-get install -y \
     libv4l-dev \
     libxvidcore-dev \
     libx264-dev \
+    qt5-default \
     zlib1g-dev \
     cmake \
     pkg-config
@@ -75,7 +81,7 @@ cd build
 # Jetson TX2 
 
 time cmake -D CMAKE_BUILD_TYPE=RELEASE \
-      -D CMAKE_INSTALL_PREFIX=/usr/local \
+      -D CMAKE_INSTALL_PREFIX=~/package_build/opencv-3.4.1/usr/local \
       -D WITH_CUDA=ON \
       -D CUDA_ARCH_BIN=${ARCH_BIN} \
       -D CUDA_ARCH_PTX="" \
@@ -126,4 +132,24 @@ fi
 exit
 
 echo "Installing ... "
-sudo make install
+make install
+
+# Preparing to package
+mkdir -p ~/package_build/opencv-$OPENCV_VERSION/etc/ld.so.conf.d
+echo "~/package_build/opencv-${OPENCV_VERSION}/usr/local/lib" > ~/package_build/opencv-$OPENCV_VERSION/etc/ld.so.conf.d/opencv.conf
+
+mkdir -p ~/package_build/opencv-$OPENCV_VERSION/DEBIAN \
+&& cd ~/package_build \
+&& echo -e "Source: opencv-${OPENCV_VERSION}\n\
+Package: opencv\n\
+Version: ${OPENCV_VERSION}\n\
+Priority: optional\n\
+Maintainer: $MAINTAINER\n\
+Architecture: arm64\n\
+Depends: \n\
+Description: OpenCV version $OPENCV_VERSION\n"\
+> ~/package_build/$OPENCV_VERSION/DEBIAN/control
+echo "Packagin with dpkg-deb"
+time fakeroot dpkg-deb --build opencv-$OPENCV_VERSION
+echo "OpenCV package .deb built."
+echo "Pakcage is in ~/package_build/opencv-${OPENCV_VERSION}.deb"
