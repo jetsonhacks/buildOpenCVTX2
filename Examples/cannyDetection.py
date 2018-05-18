@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # MIT License
 
-# Copyright (c) 2017 Jetsonhacks
+# Copyright (c) 2017-18 Jetsonhacks
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -106,10 +106,10 @@ def read_cam(video_capture):
                 showHelp = not showHelp
             elif key==44: # , lower canny edge threshold
                 edgeThreshold=max(0,edgeThreshold-1)
-                print 'Canny Edge Threshold Maximum: ',edgeThreshold
+                print ('Canny Edge Threshold Maximum: ',edgeThreshold)
             elif key==46: # , raise canny edge threshold
                 edgeThreshold=edgeThreshold+1
-                print 'Canny Edge Threshold Maximum: ', edgeThreshold
+                print ('Canny Edge Threshold Maximum: ', edgeThreshold)
             elif key==74: # Toggle fullscreen; This is the F3 key on this particular keyboard
                 # Toggle full screen mode
                 if showFullScreen == False : 
@@ -119,7 +119,7 @@ def read_cam(video_capture):
                 showFullScreen = not showFullScreen
               
     else:
-     print "camera open failed"
+     print ("camera open failed")
 
 
 
