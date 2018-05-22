@@ -1,11 +1,11 @@
 There are two example programs here. Both programs require OpenCV to be installed with GStreamer support enabled.
-Both of these examples were last tested with L4T 28.1, OpenCV 3.3
+Both of these examples were last tested with L4T 28.2, OpenCV 3.4.1
 
 The first is a simple C++ program to view the onboard camera feed from the Jetson Dev Kit.
 
 To compile gstreamer_view.cpp:
 
-$ gcc -std=c++11 gstreamer_view.cpp -o gstreamer_view -L/usr/lib -lstdc++ -lopencv_core -lopencv_highgui -lopencv_videoio
+$ gcc -std=c++11 `pkg-config --cflags opencv` `pkg-config --libs opencv` gstreamer_view.cpp -o gstreamer_view -lstdc++ -lopencv_core -lopencv_highgui -lopencv_videoio
 
 to run the program:
 
@@ -13,20 +13,25 @@ $ ./gstreamer_view
 
 The second is a Python program that reads the onboard camera feed from the Jetson Dev Kit and does Canny Edge Detection.
 
-To run the Canny detection demo:
+To run the Canny detection demo (Python 2.7):
 
 $ python cannyDetection.py
 
+With Python 3.3:
+
+$ python cannyDetection.py
+
+With the Canny detection demo, use the less than (<) and greater than (>) to adjust the edge detection parameters.
+
 ## Notes
-1. OpenCV4Tegra does not have GStreamer support enabled, and therefore will not run these demos
-2. The gstreamer_view example is from Peter Moran:
+1. The gstreamer_view example is from Peter Moran:
    https://gist.github.com/peter-moran/742998d893cd013edf6d0c86cc86ff7f
    Note that the nvvidconv flip-method was changed to 0. Earlier versions of L4T used a flip method of 2. 
 
 ## License
 MIT License
 
-Copyright (c) 2017 Jetsonhacks
+Copyright (c) 2017-2018 Jetsonhacks
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
