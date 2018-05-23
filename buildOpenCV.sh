@@ -32,6 +32,7 @@ fi
 sudo apt-add-repository universe
 sudo apt-get update
 
+# Download dependencies for the desired configuration
 cd $HOME
 sudo apt-get install -y \
     cmake \
@@ -67,6 +68,7 @@ sudo ln -sf tegra/libGL.so libGL.so
 cd $HOME
 
 # Python 2.7
+
 sudo apt-get install -y python-dev python-numpy python-py python-pytest
 # Python 3.5
 sudo apt-get install -y python3-dev python3-numpy python3-py python3-pytest
@@ -97,6 +99,7 @@ cd $HOME/opencv
 mkdir build
 cd build
 # Jetson TX2 
+
 # Here are some options to install source examples and tests
 #     -D INSTALL_TESTS=ON \
 #     -D OPENCV_TEST_DATA_PATH=../opencv_extra/testdata \
@@ -104,7 +107,6 @@ cd build
 #     -D INSTALL_PYTHON_EXAMPLES=ON \
 # There are also switches which tell CMAKE to build the samples and tests
 # Check OpenCV documentation for details
-
 
 time cmake -D CMAKE_BUILD_TYPE=RELEASE \
       -D CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} \
@@ -154,4 +156,8 @@ fi
 
 echo "Installing ... "
 sudo make install
-echo "OpenCV installed in: $CMAKE_INSTALL_PREFIX"
+if [ $? -eq 0 ] ; then
+   echo "OpenCV installed in: $CMAKE_INSTALL_PREFIX"
+else
+   echo "There was an issue with the final installation"
+fi
