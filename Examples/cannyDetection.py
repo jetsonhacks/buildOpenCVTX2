@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # MIT License
 
-# Copyright (c) 2017 Jetsonhacks
+# Copyright (c) 2017-18 Jetsonhacks
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
@@ -22,14 +22,30 @@
 # SOFTWARE.
 
 import sys
+import argparse
 import cv2
 import numpy as np
 
-def read_cam():
-    # On versions of L4T previous to L4T 28.1, flip-method=2
-    # Use the Jetson onboard camera
-    cap = cv2.VideoCapture("nvcamerasrc ! video/x-raw(memory:NVMM), width=(int)1280, height=(int)720,format=(string)I420, framerate=(fraction)30/1 ! nvvidconv flip-method=0 ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink")
-    if cap.isOpened():
+def parse_cli_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--video_device", dest="video_device",
+                        help="Video device # of USB webcam (/dev/video?) [0]",
+                        default=0, type=int)
+    arguments = parser.parse_args()
+    return arguments
+
+# On versions of L4T previous to L4T 28.1, flip-method=2
+# Use the Jetson onboard camera
+def open_onboard_camera():
+    return cv2.VideoCapture("nvcamerasrc ! video/x-raw(memory:NVMM), width=(int)640, height=(int)480, format=(string)I420, framerate=(fraction)30/1 ! nvvidconv ! video/x-raw, format=(string)BGRx ! videoconvert ! video/x-raw, format=(string)BGR ! appsink")
+
+# Open an external usb camera /dev/videoX
+def open_camera_device(device_number):
+    return cv2.VideoCapture(device_number)
+   
+
+def read_cam(video_capture):
+    if video_capture.isOpened():
         windowName = "CannyDemo"
         cv2.namedWindow(windowName, cv2.WINDOW_NORMAL)
         cv2.resizeWindow(windowName,1280,720)
@@ -45,7 +61,7 @@ def read_cam():
             if cv2.getWindowProperty(windowName, 0) < 0: # Check to see if the user closed the window
                 # This will fail if the user closed the window; Nasties get printed to the console
                 break;
-            ret_val, frame = cap.read();
+            ret_val, frame = video_capture.read();
             hsv=cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             blur=cv2.GaussianBlur(hsv,(7,7),1.5)
             edges=cv2.Canny(blur,0,edgeThreshold)
@@ -90,10 +106,10 @@ def read_cam():
                 showHelp = not showHelp
             elif key==44: # , lower canny edge threshold
                 edgeThreshold=max(0,edgeThreshold-1)
-                print 'Canny Edge Threshold Maximum: ',edgeThreshold
+                print ('Canny Edge Threshold Maximum: ',edgeThreshold)
             elif key==46: # , raise canny edge threshold
                 edgeThreshold=edgeThreshold+1
-                print 'Canny Edge Threshold Maximum: ', edgeThreshold
+                print ('Canny Edge Threshold Maximum: ', edgeThreshold)
             elif key==74: # Toggle fullscreen; This is the F3 key on this particular keyboard
                 # Toggle full screen mode
                 if showFullScreen == False : 
@@ -103,9 +119,20 @@ def read_cam():
                 showFullScreen = not showFullScreen
               
     else:
-     print "camera open failed"
+     print ("camera open failed")
 
 
 
 if __name__ == '__main__':
-    read_cam()
+    arguments = parse_cli_args()
+    print("Called with args:")
+    print(arguments)
+    print("OpenCV version: {}".format(cv2.__version__))
+    print("Device Number:",arguments.video_device)
+    if arguments.video_device==0:
+      video_capture=open_onboard_camera()
+    else:
+      video_capture=open_camera_device(arguments.video_device)
+    read_cam(video_capture)
+    video_capture.release()
+    cv2.destroyAllWindows()

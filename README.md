@@ -1,36 +1,33 @@
 # buildOpenCVTX2
 Build and install OpenCV for the NVIDIA Jetson TX2
 
-These scripts build OpenCV version 3.3 for the NVIDIA Jetson TX2 Development Kit.
+These scripts build OpenCV version 3.4 for the NVIDIA Jetson TX2 Development Kit.
 
-JetPack gives the option of installing OpenCV4Tegra (OpenCV 2.4) with accelerated CPU functions. OpenCV4Tegra is now deprecated. Here is a recipe for building OpenCV from source.
+OpenCV is a rich environment which can be configured in many different ways. You should configure OpenCV for your needs, by modifying the build file "buildOpenCV.sh". Note that selecting different options in OpenCV may also have additional library requirements which are not included in these scripts. Please read the notes below for other important points before installing.
 
-OpenCV is a rich environment which can be configured in many different ways. You should configure OpenCV for your needs, by modifying the build file "buildOpenCV.sh". Note that selecting different options in OpenCV may also have additional library requirements which are not included in these scripts.
-
-To run the the build file
+To run the the build file:
 
 $ ./buildOpenCV.sh
 
-The build system has been known at times to have issues. It's worth doing a sanity check after the build is complete:
+This will build and install OpenCV is the /usr/local directory.
 
-$ cd $HOME/opencv/build
+The folder ~/opencv and ~/opencv_extras contain the source, build and extra data files. If you wish to remove them after installation, a convenience script is provided:
 
-$ make
-
-This should ensure that everything has been built.
-
-After this, you can install the new build:
-
-$ cd $HOME/opencv/build
-
-$ sudo make install
+$ ./removeOpenCVSources.sh
 
 ## Notes
-There may be issues if have both OpenCV4Tegra and a regular OpenCV build installed at the same time. Most people do not install OpenCV4Tegra on their machine if using the OpenCV build.
+There may be issues if different version of OpenCV are installed. JetPack normally installs OpenCV in the /usr folder. You will need to consider if this is appropriate for your application. It is important to realize that many packages may rely on OpenCV. The standard installation by JetPack places the OpenCV libraries in the /usr directory. 
+
+You may consider removing OpenCV installed by JetPack before performing this script installation:
+
+$ sudo apt-get purge libopencv*
+
+With this script release, the script now installs OpenCV in /usr/local. Earlier versions of this script installed in /usr. You may have to set your include and libraries and/or PYTHONPATH to point to the new version. See the Examples folder. Alternatively, you may want to change the script to install into the /usr directory.
 
 The Jetson is an aarch64 machine, which means that the OpenCV configuration variable ENABLE_NEON is ignored. The compiler includes NEON support for all machines with aarch64 architecture.
 
-When running the OpenCV tests, currently several of the tests fail.  
+These scripts rely on OpenCV finding the correct CUDA version, instead of setting it manually.
+
 
 ## References
 
@@ -41,6 +38,12 @@ http://docs.opencv.org/3.2.0/d6/d15/tutorial_building_tegra_cuda.html
 https://devtalk.nvidia.com/default/topic/965134/opencv-3-1-compilation-on-tx1-lets-collect-the-quot-definitive-quot-cmake-settings-/?offset=3
 
 ## Release Notes
+May 2018
+* L4T 28.2
+* OpenCV 3.4
+* OpenGL support added to build script
+* Fast Math support (cuBLAS) added
+
 September 2017
 * L4T 28.1
 * OpenCV 3.3
@@ -55,7 +58,7 @@ April 2017
 ## License
 MIT License
 
-Copyright (c) 2017 Jetsonhacks
+Copyright (c) 2017-2018 Jetsonhacks
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
