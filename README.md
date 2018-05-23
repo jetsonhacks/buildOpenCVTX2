@@ -1,7 +1,7 @@
 # buildOpenCVTX2
 Build and install OpenCV for the NVIDIA Jetson TX2
 
-These scripts build OpenCV version 3.4 for the NVIDIA Jetson TX2 Development Kit.
+These scripts build OpenCV version 3.4 for the NVIDIA Jetson TX2 Development Kit. Please see Releases/Tags for earlier versions.
 
 OpenCV is a rich environment which can be configured in many different ways. You should configure OpenCV for your needs, by modifying the build file "buildOpenCV.sh". Note that selecting different options in OpenCV may also have additional library requirements which are not included in these scripts. Please read the notes below for other important points before installing.
 
@@ -40,12 +40,16 @@ https://devtalk.nvidia.com/default/topic/965134/opencv-3-1-compilation-on-tx1-le
 ## Release Notes
 May 2018
 * L4T 28.2
+* CUDA 9
 * OpenCV 3.4
 * OpenGL support added to build script
 * Fast Math support (cuBLAS) added
+* Supports both Python 3 and Python 2
+* Canny Detection example supports built-in camera and USB camera. See the Examples folder
 
 September 2017
 * L4T 28.1
+* CUDA 8
 * OpenCV 3.3
 * GStreamer support added to build script
 * GStreamer OpenCV examples using the Jetson onboard camera 
