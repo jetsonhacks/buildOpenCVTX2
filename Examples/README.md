@@ -19,7 +19,7 @@ $ python cannyDetection.py
 
 With Python 3.3:
 
-$ python cannyDetection.py
+$ python3 cannyDetection.py
 
 With the Canny detection demo, use the less than (<) and greater than (>) to adjust the edge detection parameters.
 
