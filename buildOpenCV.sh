@@ -14,6 +14,9 @@ CMAKE_INSTALL_PREFIX=/usr/local
 # Make sure that you set this to YES
 # Value should be YES or NO
 DOWNLOAD_OPENCV_EXTRAS=NO
+# Source code directory
+OPENCV_SOURCE_DIR=$HOME
+THIS_REPO_DIR=$PWD
 
 source scripts/jetson_variables
 
@@ -33,7 +36,7 @@ sudo apt-add-repository universe
 sudo apt-get update
 
 # Download dependencies for the desired configuration
-cd $HOME
+cd $THIS_REPO_DIR
 sudo apt-get install -y \
     cmake \
     libavcodec-dev \
@@ -59,13 +62,13 @@ sudo apt-get install -y \
 
 # https://devtalk.nvidia.com/default/topic/1007290/jetson-tx2/building-opencv-with-opengl-support-/post/5141945/#5141945
 cd /usr/local/cuda/include
-sudo patch -N cuda_gl_interop.h '/home/nvidia/buildOpenCVTX2/patches/OpenGLHeader.patch' 
+sudo patch -N cuda_gl_interop.h $THIS_REPO_DIR'/patches/OpenGLHeader.patch' 
 # Clean up the OpenGL tegra libs that usually get crushed
 cd /usr/lib/aarch64-linux-gnu/
 sudo ln -sf tegra/libGL.so libGL.so
 
 
-cd $HOME
+cd $OPENCV_SOURCE_DIR
 
 # Python 2.7
 
@@ -88,14 +91,14 @@ fi
 if [ $DOWNLOAD_OPENCV_EXTRAS == "YES" ] ; then
  echo "Installing opencv_extras"
  # This is for the test data
- cd $HOME
+ cd $SOURCE_CODE_DIR
  git clone https://github.com/opencv/opencv_extra.git
  cd opencv_extra
  git checkout -b v${OPENCV_VERSION} ${OPENCV_VERSION}
 fi
 
 
-cd $HOME/opencv
+cd $OPENCV_SOURCE_DIR/opencv
 mkdir build
 cd build
 # Jetson TX2 
@@ -160,4 +163,10 @@ if [ $? -eq 0 ] ; then
    echo "OpenCV installed in: $CMAKE_INSTALL_PREFIX"
 else
    echo "There was an issue with the final installation"
+fi
+
+# check installation
+IMPORT_CHECK="$(python -c "import cv2 ; print cv2.__version__")"
+if [[ $IMPORT_CHECK != *$OPENCV_VERSION* ]]; then
+  echo "Something went wrong, please check installation carefully!"
 fi
