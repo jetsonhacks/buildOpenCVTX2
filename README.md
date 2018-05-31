@@ -28,6 +28,8 @@ The Jetson is an aarch64 machine, which means that the OpenCV configuration vari
 
 These scripts rely on OpenCV finding the correct CUDA version, instead of setting it manually.
 
+Special thanks to Daniel (Github user @dkoguciuk) for script cleanup.
+
 
 ## References
 
