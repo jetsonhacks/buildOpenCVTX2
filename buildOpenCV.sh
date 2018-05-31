@@ -16,7 +16,7 @@ CMAKE_INSTALL_PREFIX=/usr/local
 DOWNLOAD_OPENCV_EXTRAS=NO
 # Source code directory
 OPENCV_SOURCE_DIR=$HOME
-THIS_REPO_DIR=$PWD
+WHEREAMI=$PWD
 
 source scripts/jetson_variables
 
@@ -36,7 +36,7 @@ sudo apt-add-repository universe
 sudo apt-get update
 
 # Download dependencies for the desired configuration
-cd $THIS_REPO_DIR
+cd $WHEREAMI
 sudo apt-get install -y \
     cmake \
     libavcodec-dev \
@@ -62,13 +62,12 @@ sudo apt-get install -y \
 
 # https://devtalk.nvidia.com/default/topic/1007290/jetson-tx2/building-opencv-with-opengl-support-/post/5141945/#5141945
 cd /usr/local/cuda/include
-sudo patch -N cuda_gl_interop.h $THIS_REPO_DIR'/patches/OpenGLHeader.patch' 
+sudo patch -N cuda_gl_interop.h $WHEREAMI'/patches/OpenGLHeader.patch' 
 # Clean up the OpenGL tegra libs that usually get crushed
 cd /usr/lib/aarch64-linux-gnu/
 sudo ln -sf tegra/libGL.so libGL.so
 
 
-cd $OPENCV_SOURCE_DIR
 
 # Python 2.7
 
@@ -80,6 +79,7 @@ sudo apt-get install -y python3-dev python3-numpy python3-py python3-pytest
 # GStreamer support
 sudo apt-get install -y libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev 
 
+cd $OPENCV_SOURCE_DIR
 git clone https://github.com/opencv/opencv.git
 cd opencv
 git checkout -b v${OPENCV_VERSION} ${OPENCV_VERSION}
@@ -163,10 +163,14 @@ if [ $? -eq 0 ] ; then
    echo "OpenCV installed in: $CMAKE_INSTALL_PREFIX"
 else
    echo "There was an issue with the final installation"
+   exit 1
 fi
 
 # check installation
 IMPORT_CHECK="$(python -c "import cv2 ; print cv2.__version__")"
 if [[ $IMPORT_CHECK != *$OPENCV_VERSION* ]]; then
-  echo "Something went wrong, please check installation carefully!"
+  echo "There was an error loading OpenCV in the Python sanity test."
+  echo "The loaded version does not match the version built here."
+  echo "Please check the installation."
+  echo "The first check should be the PYTHONPATH environment variable."
 fi
