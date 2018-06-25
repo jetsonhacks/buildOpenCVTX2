@@ -22,7 +22,7 @@ CLEANUP=true
 
 function usage
 {
-    echo "usage: ./buildOpenCVTX1.sh [[-s sourcedir ] | [-h]]"
+    echo "usage: ./buildAndPackage.sh [[-s sourcedir ] | [-h]]"
     echo "-s | --sourcedir   Directory in which to place the opencv sources (default $HOME)"
     echo "-i | --installdir  Directory in which to install opencv libraries (default /usr/local)"
     echo "-h | --help  This message"
@@ -138,6 +138,7 @@ cd build
 # There are also switches which tell CMAKE to build the samples and tests
 # Check OpenCV documentation for details
 
+
 time cmake -D CMAKE_BUILD_TYPE=RELEASE \
       -D CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} \
       -D WITH_CUDA=ON \
@@ -151,6 +152,7 @@ time cmake -D CMAKE_BUILD_TYPE=RELEASE \
       -D WITH_GSTREAMER_0_10=OFF \
       -D WITH_QT=ON \
       -D WITH_OPENGL=ON \
+      -D CPACK_BINARY_DEB=ON \
       ../
 
 if [ $? -eq 0 ] ; then
@@ -192,6 +194,30 @@ else
    echo "There was an issue with the final installation"
    exit 1
 fi
+
+echo "Starting Packaging"
+sudo ldconfig  
+NUM_CPU=$(nproc)
+time sudo make package -j$(($NUM_CPU - 1))
+if [ $? -eq 0 ] ; then
+  echo "OpenCV make package successful"
+else
+  # Try to make again; Sometimes there are issues with the build
+  # because of lack of resources or concurrency issues
+  echo "Make package did not build " >&2
+  echo "Retrying ... "
+  # Single thread this time
+  sudo make package
+  if [ $? -eq 0 ] ; then
+    echo "OpenCV make package successful"
+  else
+    # Try to make again
+    echo "Make package did not successfully build" >&2
+    echo "Please fix issues and retry build"
+    exit 1
+  fi
+fi
+
 
 # check installation
 IMPORT_CHECK="$(python -c "import cv2 ; print cv2.__version__")"
