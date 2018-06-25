@@ -44,7 +44,7 @@ $ ./buildAndPackageOpenCV.sh -s &lt;file directory&gt;
 
 This example will build OpenCV in the given file directory and install OpenCV in the /usr/local directory.
 
-The corresponding .deb files will be in the &lt;file directory&gt/opencv/build directory in .deb file and compressed forms. 
+The corresponding .deb files will be in the &lt;file directory&gt;/opencv/build directory in .deb file and compressed forms. 
 
 <h4>Installing .deb files</h4>
 
