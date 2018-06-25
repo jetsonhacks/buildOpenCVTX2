@@ -52,20 +52,27 @@ To install .deb files:
 
 Switch to the directory where the .deb files are located. Then:
 
-sudo dpkg -i OpenCV-&lt;OpenCV Version info&gt;-aarch64-libs.deb
-<em>For example: sudo dpkg -i OpenCV-3.4.1-1-g75a2577-aarch64-libs.deb</em> 
-sudo apt-get install -f
-sudo dpkg -i OpenCV-&lt;OpenCV Version info&gt;-aarch64-dev.deb 
-sudo dpkg -i OpenCV-&lt;OpenCV Version info&gt;-aarch64-python.deb 
+<blockquote>
+$ sudo dpkg -i OpenCV-&lt;OpenCV Version info&gt;-aarch64-libs.deb
+
+<em>For example: $ sudo dpkg -i OpenCV-3.4.1-1-g75a2577-aarch64-libs.deb</em> 
+
+$ sudo apt-get install -f
+
+$ sudo dpkg -i OpenCV-&lt;OpenCV Version info&gt;-aarch64-dev.deb 
+
+$ sudo dpkg -i OpenCV-&lt;OpenCV Version info&gt;-aarch64-python.deb </blockquote>
 
 The libraries will be installed in /usr/lib
+
 Binaries are in /usr/bin
+
 opencv.pc is in /usr/lib/pkgconfig
 
 <strong>Package Notes: </strong>
 <ul><li>The build process default installation is in /usr/local
 Note that the .deb file install into /usr</li>
-<li>The dpkg/apt name does not include version information, e.g. opencv-libs</li>
+<li>After installation, the dpkg/apt name does not include version information, e.g. the name is opencv-libs</li>
 </ul>
 
 ## Notes
