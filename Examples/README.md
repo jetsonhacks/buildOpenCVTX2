@@ -24,16 +24,17 @@ $ python3 cannyDetection.py
 With the Canny detection demo, use the less than (<) and greater than (>) to adjust the edge detection parameters.
 
 ## Notes
+
 1. The gstreamer_view example is from Peter Moran:
    https://gist.github.com/peter-moran/742998d893cd013edf6d0c86cc86ff7f
-   Note that the nvvidconv flip-method was changed to 0. Earlier versions of L4T used a flip method of 2. 
+   Note that the nvvidconv flip-method was changed to 0. Earlier versions of L4T used a flip method of 2.
 
 2. For the Python examples, you will need to have the appropriate librariers installed. From the buildOpenCV scripts:
 
-# Python 2.7
-sudo apt-get install -y python-dev python-numpy python-py python-pytest
-# Python 3.5
-sudo apt-get install -y python3-dev python3-numpy python3-py python3-pytest
+####     Python 2.7
+    $ sudo apt-get install -y python-dev python-numpy python-py python-pytest
+####     Python 3.5
+    $ sudo apt-get install -y python3-dev python3-numpy python3-py python3-pytest
 
 
 ## License
