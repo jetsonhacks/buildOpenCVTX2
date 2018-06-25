@@ -106,6 +106,7 @@ June 2018
 * OpenCV 3.4
 * Added command line arguments to set source and installation directories
 * Add a script to build OpenCV .deb packages.
+* Add upstream patch for C library compilation issues
 
 May 2018
 * L4T 28.2
