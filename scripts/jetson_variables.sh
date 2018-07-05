@@ -45,6 +45,7 @@ if [ -f /sys/module/tegra_fuse/parameters/tegra_chip_id ]; then
     esac
     JETSON_DESCRIPTION="NVIDIA Jetson $JETSON_BOARD"
 fi
+export JETSON_BOARD
 
 # NVIDIA Jetson version
 # reference https://devtalk.nvidia.com/default/topic/860092/jetson-tk1/how-do-i-know-what-version-of-l4t-my-jetson-tk1-is-running-/
@@ -54,7 +55,7 @@ if [ -f /etc/nv_tegra_release ]; then
 
     # Load release and revision
     JETSON_L4T_RELEASE=$(echo $JETSON_L4T_STRING | cut -f 1 -d ',' | sed 's/\# R//g' | cut -d ' ' -f1)
-    JETSON_L4T_REVISION=$(echo $JETSON_L4T_STRING | cut -f 2 -d ',' | sed 's/\ REVISION: //g' | cut -d. -f1)
+    JETSON_L4T_REVISION=$(echo $JETSON_L4T_STRING | cut -f 2 -d ',' | sed 's/\ REVISION: //g' )
     # unset variable
     unset JETSON_L4T_STRING
     
@@ -65,6 +66,8 @@ if [ -f /etc/nv_tegra_release ]; then
     # https://developer.nvidia.com/embedded/jetpack-archive
     if [ "$JETSON_BOARD" = "TX2i" ] ; then 
         case $JETSON_L4T in
+            "28.2.1")
+                    JETSON_JETPACK="3.2.1" ;;
             "28.2") 
                JETSON_JETPACK="3.2" ;;
             *)
@@ -72,6 +75,8 @@ if [ -f /etc/nv_tegra_release ]; then
         esac        
     elif [ "$JETSON_BOARD" = "TX2" ] ; then
         case $JETSON_L4T in
+            "28.2.1")
+                    JETSON_JETPACK="3.2.1" ;;
             "28.2") 
                     JETSON_JETPACK="3.2" ;;
             "28.1") 
@@ -84,7 +89,7 @@ if [ -f /etc/nv_tegra_release ]; then
     elif [ "$JETSON_BOARD" = "TX1" ] ; then
         case $JETSON_L4T in
             "28.2") 
-                    JETSON_JETPACK="3.2" ;;
+                    JETSON_JETPACK="3.2 or 3.2.1" ;;
             "28.1") 
                     JETSON_JETPACK="3.1" ;;
             "24.2.1") 
@@ -133,6 +138,11 @@ if [ $? == "0" ] ; then
 else
     JETSON_OPENCV="NOT INSTALLED"
 fi
+
+export JETSON_BOARD
+export JETSON_CUDA
+export JETSON_JETPACK
+export JETSON_L4T
 
 # TODO Add enviroments variables:
 # - UID -> https://devtalk.nvidia.com/default/topic/996988/jetson-tk1/chip-uid/post/5100481/#5100481

@@ -48,7 +48,7 @@ done
 
 CMAKE_INSTALL_PREFIX=$INSTALL_DIR
 
-source scripts/jetson_variables
+source scripts/jetson_variables.sh
 
 # Print out the current configuration
 echo "Build configuration: "
