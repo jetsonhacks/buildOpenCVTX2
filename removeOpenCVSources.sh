@@ -17,7 +17,7 @@ function usage
 while [ "$1" != "" ]; do
     case $1 in
         -d | --directory )      shift
-				OPENCV_SOURCE_DIR=$1
+                OPENCV_SOURCE_DIR=$1
                                 ;;
         -h | --help )           usage
                                 exit
@@ -31,25 +31,13 @@ done
 echo "Removing opencv directory from $OPENCV_SOURCE_DIR"
 cd $OPENCV_SOURCE_DIR
 
-if [ -d "opencv" ] ; then
-   if [ -L "opencv" ] ; then
-     echo "opencv is a symlink, unable to remove"
-   else
-     echo "Removing opencv sources"
-     sudo rm -r opencv
-   fi
-else
-   echo "Could not find opencv directory"
-fi
-
-if [ -d "opencv_extra" ] ; then
-   if [ -L "opencv_extra" ] ; then 
-     echo "opencv_extra is a symlink, unable to remove"
-   else
-     echo "Removing opencv_extra sources"
-     sudo rm -r opencv_extra
-   fi
-else
-   echo "Could not find opencv_extra directory"
-fi
-
+for remove_dir in "opencv" "opencv_extra" "opencv_contrib"; do
+    if [ -d ${remove_dir} ] ; then
+       if [ -L ${remove_dir} ] ; then
+         echo "${remove_dir} is a symlink, unable to remove"
+       else
+         echo "Removing ${remove_dir} sources"
+         rm -r ${remove_dir}
+       fi
+    fi
+done

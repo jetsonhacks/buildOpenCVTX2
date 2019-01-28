@@ -3,6 +3,7 @@
 # Copyright(c) JetsonHacks (2017-2018)
 
 OPENCV_VERSION=3.4.1
+OPENCV_CONTRIB_VERSION=${OPENCV_CONTRIB_VERSION:-$OPENCV_VERSION}
 # Jetson TX2
 ARCH_BIN=6.2
 # Jetson TX1
@@ -14,6 +15,10 @@ INSTALL_DIR=/usr/local
 # Make sure that you set this to YES
 # Value should be YES or NO
 DOWNLOAD_OPENCV_EXTRAS=NO
+# Download and compile with opencv_contrib:
+# 	https://github.com/opencv/opencv_contrib
+# Will download and compile next to opencv source
+WITH_OPENCV_CONTRIB=NO
 # Source code directory
 OPENCV_SOURCE_DIR=$HOME
 WHEREAMI=$PWD
@@ -60,6 +65,10 @@ echo " OpenCV Source will be installed in: $OPENCV_SOURCE_DIR"
 
 if [ $DOWNLOAD_OPENCV_EXTRAS == "YES" ] ; then
  echo "Also installing opencv_extras"
+fi
+
+if [ $WITH_OPENCV_CONTRIB == "YES" ] ; then
+ echo "Also installing opencv_contrib"
 fi
 
 # Repository setup
@@ -126,6 +135,15 @@ if [ $DOWNLOAD_OPENCV_EXTRAS == "YES" ] ; then
  git checkout -b v${OPENCV_VERSION} ${OPENCV_VERSION}
 fi
 
+OPENCV_CONTRIB_COMPILE=""
+if [ $WITH_OPENCV_CONTRIB == "YES" ] ; then
+ echo "Installing opencv_contrib"
+ cd $OPENCV_SOURCE_DIR
+ git clone https://github.com/opencv/opencv_contrib.git
+ git checkout -b v${OPENCV_CONTRIB_VERSION} ${OPENCV_CONTRIB_VERSION}
+ OPENCV_CONTRIB_COMPILE="-D OPENCV_EXTRA_MODULES_PATH=${OPENCV_SOURCE_DIR}/opencv_contrib/modules"
+fi
+
 cd $OPENCV_SOURCE_DIR/opencv
 mkdir build
 cd build
@@ -137,6 +155,7 @@ cd build
 #     -D INSTALL_PYTHON_EXAMPLES=ON \
 # There are also switches which tell CMAKE to build the samples and tests
 # Check OpenCV documentation for details
+
 
 
 time cmake -D CMAKE_BUILD_TYPE=RELEASE \
@@ -153,6 +172,7 @@ time cmake -D CMAKE_BUILD_TYPE=RELEASE \
       -D WITH_QT=ON \
       -D WITH_OPENGL=ON \
       -D CPACK_BINARY_DEB=ON \
+      $OPENCV_CONTRIB_COMPILE \
       ../
 
 if [ $? -eq 0 ] ; then
