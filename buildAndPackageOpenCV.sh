@@ -139,6 +139,7 @@ cd build
 # Check OpenCV documentation for details
 
 
+#cmake below lines if Cuda version is 10
 time cmake -D CMAKE_BUILD_TYPE=RELEASE \
       -D CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} \
       -D WITH_CUDA=ON \
@@ -152,7 +153,25 @@ time cmake -D CMAKE_BUILD_TYPE=RELEASE \
       -D WITH_GSTREAMER_0_10=OFF \
       -D WITH_QT=ON \
       -D WITH_OPENGL=ON \
-      -D CPACK_BINARY_DEB=ON \
+      -D WITH_NVCUVID=OFF \
+      -D BUILD_opencv_cudacodec=OFF \
+      ../
+
+
+#cmake below lines if Cuda version is less than 10
+time cmake -D CMAKE_BUILD_TYPE=RELEASE \
+      -D CMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} \
+      -D WITH_CUDA=ON \
+      -D CUDA_ARCH_BIN=${ARCH_BIN} \
+      -D CUDA_ARCH_PTX="" \
+      -D ENABLE_FAST_MATH=ON \
+      -D CUDA_FAST_MATH=ON \
+      -D WITH_CUBLAS=ON \
+      -D WITH_LIBV4L=ON \
+      -D WITH_GSTREAMER=ON \
+      -D WITH_GSTREAMER_0_10=OFF \
+      -D WITH_QT=ON \
+      -D WITH_OPENGL=ON \
       ../
 
 if [ $? -eq 0 ] ; then
