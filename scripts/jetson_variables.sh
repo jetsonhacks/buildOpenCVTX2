@@ -33,6 +33,7 @@ jetson_jetpack()
         "35.1.0") JETSON_JETPACK="5.0.2" ;;
         "34.1.1") JETSON_JETPACK="5.0.1 DP" ;;
         "34.1.0") JETSON_JETPACK="5.0 DP" ;;
+        "32.7.3") JETSON_JETPACK="4.6.3" ;;
         "32.7.2") JETSON_JETPACK="4.6.2" ;;
         "32.7.1") JETSON_JETPACK="4.6.1" ;;
         "32.6.1") JETSON_JETPACK="4.6" ;;
