@@ -96,7 +96,17 @@ cd /usr/local/cuda/include
 sudo patch -N cuda_gl_interop.h $WHEREAMI'/patches/OpenGLHeader.patch' 
 # Clean up the OpenGL tegra libs that usually get crushed
 cd /usr/lib/aarch64-linux-gnu/
+if [ -e tegra/libGL.so ]
+then
 sudo ln -sf tegra/libGL.so libGL.so
+else
+if [ -e libGL.so.1.0.0 ]
+then
+sudo ln -sf libGL.so.1.0.0 libGL.so
+# L4T R32.3.1 and L4T R32.4.2 (JetPack 4.3 and 4.4) or other, not such file of directory tegra/libGL.so
+# https://forums.developer.nvidia.com/t/build-opencv-3-4-with-cuda-on-nvidia-jetson-tx2/74601
+fi
+fi
 
 # Python 2.7
 sudo apt-get install -y python-dev python-numpy python-py python-pytest
